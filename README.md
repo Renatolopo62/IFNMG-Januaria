@@ -58,24 +58,24 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
 #### 3. Definir quais colunas serão utilizadas e unir todas as tabelas em uma só.
   Antes de definir quais colunas devemos descartar temos que definir nossos objetivos com essa base de dados.
   ##### Objetivos:
-	* Criar um ID. Apesar de nas tabelas termos a variável `ID_ALUNO` esse id não é o mesmo para todos os anos
-	então e necessário criar o nosso próprio id, para isso vamos precisar das colunas `TP_COR_RACA`, `TP_SEXO`, `NU_ANO_NASCIMENTO`,
-	`NU_MES_NASCIMENTO`, `NU_DIA_NASCIMENTO` e `CO_MUNICIPIO_NASCIMENTO`, como essas variáveis não vão mudar independente do ano
-	podemos usar elas para criar nosso id.
-	* Identificar o número de Evasão de cada ano. Pra isso vamos usar a coluna `NU_ANO_CENSO` e o id que criamos.
-	* Identificar as Transferencias entre os cursos do campus e como elas estão distribuidas. Utilizaremos novamente o id para rastear o aluno
-	e o `CO_CURSO`. Os cursos do IFNMG - Januária são:
+  * Criar um ID. Apesar de nas tabelas termos a variável `ID_ALUNO` esse id não é o mesmo para todos os anos
+  então e necessário criar o nosso próprio id, para isso vamos precisar das colunas `TP_COR_RACA`, `TP_SEXO`, `NU_ANO_NASCIMENTO`,
+  `NU_MES_NASCIMENTO`, `NU_DIA_NASCIMENTO` e `CO_MUNICIPIO_NASCIMENTO`, como essas variáveis não vão mudar independente do ano
+  podemos usar elas para criar nosso id.
+  * Identificar o número de Evasão de cada ano. Pra isso vamos usar a coluna `NU_ANO_CENSO` e o id que criamos.
+  * Identificar as Transferencias entre os cursos do campus e como elas estão distribuidas. Utilizaremos novamente o id para rastear o aluno
+  e o `CO_CURSO`. Os cursos do IFNMG - Januária são:
 
-	Nome do curso | Código do curso
-	--- | --- 
-	ANÁLISE E DESENVOLVIMENTO DE SISTEMAS|96981
-	MATEMÁTICA|99503
-	ADMINISTRAÇÃO|107474
-	AGRONOMIA|107476
-	FÍSICA|112692
-	CIÊNCIAS BIOLÓGICAS|1102801
-	ENGENHARIA AGRÍCOLA E AMBIENTAL|1102802
-	ENGENHARIA CIVIL|1376268
-	SISTEMAS DE INFORMAÇÃO|1421026
+  Nome do curso | Código do curso
+  --- | --- 
+  ANÁLISE E DESENVOLVIMENTO DE SISTEMAS|96981
+  MATEMÁTICA|99503
+  ADMINISTRAÇÃO|107474
+  AGRONOMIA|107476
+  FÍSICA|112692
+  CIÊNCIAS BIOLÓGICAS|1102801
+  ENGENHARIA AGRÍCOLA E AMBIENTAL|1102802
+  ENGENHARIA CIVIL|1376268
+  SISTEMAS DE INFORMAÇÃO|1421026
 
-	* Proximo
+  * Proximo
