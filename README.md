@@ -78,4 +78,8 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
   ENGENHARIA CIVIL|1376268
   SISTEMAS DE INFORMAÇÃO|1421026
 
-  * Proximo
+  * Contabilizar o número de matriculas por ano, curso, grau academico, sexo, raça e alunos com deficiencias. Colunas `CO_CURSO`, `TP_GRAU_ACADEMICO`, `IN_DEFICIENCIA`, `TP_COR_RACA` e `TP_SEXO`.
+  * Distribuição da idade dos alunos. Coluna `NU_IDADE`.
+  * Distribuição do tipo de situação de vínculo do aluno no curso. Coluna `TP_SITUACAO`.
+  * Número de alunos ingreço por reserva de vagas. Coluna `IN_RESERVA_VAGAS`.
+  * Distribuição de quanto tempo os alunos levam para se formar em cada curso. Coluna `NU_ANO_INGRESSO`.
