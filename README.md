@@ -13,5 +13,6 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
   a lista com os codigos dos cursos e o ano do censo. As filtragem podem demorar alguns minutos já que estamos 
   trabalhando com uma tabela que tem as matriculas de alunos do Ensino superior do Brasil todo. No final será criado 
   para cada ano um arquivo csv com as matriculas, que serão unidos em um só arquivo na proxima etapa.  
+  
   Obs: Os arquivos `DM_LOCAL_OFERTA` e `DM_ALUNO` devem ser extraidos e passados como parametro o caminho onde ele se encontra
   de acordo com o ano.
