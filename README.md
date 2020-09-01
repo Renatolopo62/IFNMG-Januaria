@@ -4,7 +4,7 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
 ## Etapas 
 ###  Filtragem dos dados
  #### 1. Baixar os censo de Educação superior no site do INEP.
- Os arquivos do censo podem ser encontrados [aqui](http://censobasico.inep.gov.br/censobasico/).
+ Os arquivos do censo podem ser encontrados [aqui](http://portal.inep.gov.br/microdados).
 ####  2. filtragem das matriculas que pertencem ao IFNMG - Januária. 
   A função `getCodCurso()` retorna 
   uma lista com os códigos dos cursos do IFNMG - Januária encontrados na tabela `DM_LOCAL_OFERTA`,
