@@ -56,7 +56,7 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
   de acordo com o ano.
   
 #### 3. Definir quais colunas serão utilizadas e unir todas as tabelas em uma só.
-  Antes de definir quais colunas devemos descartar temos que definir nossos objetivos com essa base de dados.
+  Antes de Identificar as colunas devemos definir os nossos objetivos com essa base de dados.
   ##### Objetivos:
   * Criar um ID. Apesar de nas tabelas termos a variável `ID_ALUNO` esse id não é o mesmo para todos os anos
   então e necessário criar o nosso próprio id, para isso vamos precisar das colunas `TP_COR_RACA`, `TP_SEXO`, `NU_ANO_NASCIMENTO`,
