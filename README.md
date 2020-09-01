@@ -66,17 +66,17 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
   * Identificar as Transferencias entre os cursos do campus e como elas estão distribuidas. Utilizaremos novamente o id para rastear o aluno
   e o `CO_CURSO`. Os cursos do IFNMG - Januária são:
 
-  Nome do curso | Código do curso
-  --- | --- 
-  ANÁLISE E DESENVOLVIMENTO DE SISTEMAS|96981
-  MATEMÁTICA|99503
-  ADMINISTRAÇÃO|107474
-  AGRONOMIA|107476
-  FÍSICA|112692
-  CIÊNCIAS BIOLÓGICAS|1102801
-  ENGENHARIA AGRÍCOLA E AMBIENTAL|1102802
-  ENGENHARIA CIVIL|1376268
-  SISTEMAS DE INFORMAÇÃO|1421026
+				  Nome do curso | Código do curso
+				  --- | --- 
+				  ANÁLISE E DESENVOLVIMENTO DE SISTEMAS|96981
+				  MATEMÁTICA|99503
+				  ADMINISTRAÇÃO|107474
+				  AGRONOMIA|107476
+				  FÍSICA|112692
+				  CIÊNCIAS BIOLÓGICAS|1102801
+				  ENGENHARIA AGRÍCOLA E AMBIENTAL|1102802
+				  ENGENHARIA CIVIL|1376268
+				  SISTEMAS DE INFORMAÇÃO|1421026
 
   * Contabilizar o número de matriculas por ano, curso, grau academico, sexo, raça e alunos com deficiencias. Colunas `CO_CURSO`, `TP_GRAU_ACADEMICO`, `IN_DEFICIENCIA`, `TP_COR_RACA` e `TP_SEXO`.
   * Distribuição da idade dos alunos. Coluna `NU_IDADE`.
