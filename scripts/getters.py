@@ -1,3 +1,5 @@
+import pandas as pd
+
 def getCodCurso():
 	# retorna o codigo dos cursos superiores do IFNMG campus Januária.
 	file = open('../dados de entrada/DM_LOCAL_OFERTA.CSV','r',encoding='ISO-8859-1')
@@ -57,8 +59,76 @@ def getNomeCurso(cod_cursos):
 
 
 '''
+*Váriaveis que serão selecionadas
+
 NU_ANO_CENSO, CO_CURSO, TP_GRAU_ACADEMICO, TP_COR_RACA, TP_SEXO, NU_ANO_NASCIMENTO,
 NU_MES_NASCIMENTO, NU_DIA_NASCIMENTO, NU_IDADE, CO_MUNICIPIO_NASCIMENTO, IN_DEFICIENCIA,
 TP_SITUACAO, IN_RESERVA_VAGAS, NU_ANO_INGRESSO
 
 '''
+LIST_COLUMNS = [
+	'NU_ANO_CENSO', 
+	'CO_CURSO', 
+	'TP_GRAU_ACADEMICO', 'CO_GRAU_ACADEMICO',
+	'TP_COR_RACA', 'CO_COR_RACA_ALUNO',
+	'TP_SEXO', 'IN_SEXO_ALUNO',
+	'NU_ANO_NASCIMENTO', 'NU_ANO_ALUNO_NASC',
+	'NU_MES_NASCIMENTO', 'NU_MES_ALUNO_NASC',
+	'NU_DIA_NASCIMENTO', 'NU_DIA_ALUNO_NASC',
+	'NU_IDADE', 'NU_IDADE_ALUNO',
+	'CO_MUNICIPIO_NASCIMENTO', 
+	'IN_DEFICIENCIA', 'TP_DEFICIENCIA', 'IN_ALUNO_DEF_TGD_SUPER', 'IN_ALUNO_DEFICIENCIA',
+	'TP_SITUACAO', 'CO_ALUNO_SITUACAO',
+	'IN_RESERVA_VAGAS', 
+	'NU_ANO_INGRESSO', 'ANO_INGRESSO'
+
+]
+# 2009 não tem CO_MUNICIPIO_NASCIMENTO
+DIC_NAME_COMUNS = {
+	'NU_ANO_CENSO': ['NU_ANO_CENSO'], 
+	'CO_CURSO': ['CO_CURSO'], 
+	'TP_GRAU_ACADEMICO': ['TP_GRAU_ACADEMICO', 'CO_GRAU_ACADEMICO'],
+	'TP_COR_RACA': ['TP_COR_RACA', 'CO_COR_RACA_ALUNO'],
+	'TP_SEXO': ['TP_SEXO', 'IN_SEXO_ALUNO'],
+	'NU_ANO_NASCIMENTO': ['NU_ANO_NASCIMENTO', 'NU_ANO_ALUNO_NASC'],
+	'NU_MES_NASCIMENTO': ['NU_MES_NASCIMENTO', 'NU_MES_ALUNO_NASC'],
+	'NU_DIA_NASCIMENTO': ['NU_DIA_NASCIMENTO', 'NU_DIA_ALUNO_NASC'],
+	'NU_IDADE': ['NU_IDADE', 'NU_IDADE_ALUNO'],
+	'CO_MUNICIPIO_NASCIMENTO': ['CO_MUNICIPIO_NASCIMENTO'], 
+	'IN_DEFICIENCIA': ['IN_DEFICIENCIA', 'TP_DEFICIENCIA', 'IN_ALUNO_DEF_TGD_SUPER', 'IN_ALUNO_DEFICIENCIA'],
+	'TP_SITUACAO': ['TP_SITUACAO', 'CO_ALUNO_SITUACAO'],
+	'IN_RESERVA_VAGAS': ['IN_RESERVA_VAGAS'], 
+	'NU_ANO_INGRESSO': ['NU_ANO_INGRESSO', 'ANO_INGRESSO']
+}
+
+def getDicRename(columns):
+	dic_rename = {}
+	for col in columns:
+		for i in DIC_NAME_COMUNS:
+			if col in DIC_NAME_COMUNS[i]:
+				dic_rename[i] = i
+				break
+	print(len(dic_rename))
+	return dic_rename
+
+
+def getDf(ano):
+	df = pd.read_csv(f'../dados/matriculas_januaria{ano}.csv','r', delimiter='|')
+	columns = list(df.columns)
+	# seleciona somente as colunas que estão em LIST_COLUMNS
+	columns_drop = [x for x in columns if x not in LIST_COLUMNS]
+	df = df.drop(columns = columns_drop)
+	if ano != 2017 and ano != 2018:
+		df['NU_ANO_CENSO'] = ano
+	if ano == 2009:
+		df['CO_MUNICIPIO_NASCIMENTO'] = 'null'
+	
+	return df.rename(columns = getDicRename(list(df.columns)))
+
+def getDadosPadronizados():
+	list_df = []
+	for ano in range(2009,2019):
+		df = getDf(ano)
+		list_df.append(df)
+	df_concat = pd.concat(list_df)
+	print(df_concat)
