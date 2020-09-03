@@ -102,33 +102,48 @@ DIC_NAME_COMUNS = {
 }
 
 def getDicRename(columns):
+	# retorna um dicionário com os novos nomes das colunas (ex: {novo nome: antigo nome})
 	dic_rename = {}
 	for col in columns:
 		for i in DIC_NAME_COMUNS:
 			if col in DIC_NAME_COMUNS[i]:
-				dic_rename[i] = i
+				dic_rename[i] = col
 				break
-	print(len(dic_rename))
+
 	return dic_rename
 
 
 def getDf(ano):
-	df = pd.read_csv(f'../dados/matriculas_januaria{ano}.csv','r', delimiter='|')
-	columns = list(df.columns)
+	df = pd.read_csv(f'../dados/matriculas_januaria{ano}.csv','r', delimiter='|')   
+
 	# seleciona somente as colunas que estão em LIST_COLUMNS
+	columns = list(df.columns)
 	columns_drop = [x for x in columns if x not in LIST_COLUMNS]
 	df = df.drop(columns = columns_drop)
+
+	# adiciona novas colunas caso ela não exista, para que os df ficarem com o
+	# mesmo número de colunas.
 	if ano != 2017 and ano != 2018:
 		df['NU_ANO_CENSO'] = ano
 	if ano == 2009:
 		df['CO_MUNICIPIO_NASCIMENTO'] = 'null'
-	
-	return df.rename(columns = getDicRename(list(df.columns)))
+
+	# renomeia as colunas, elas devem ter os mesmos nomes em todos os data frames
+	# para poder usar a função concat.
+	dic = getDicRename(list(df.columns))
+	df.columns = [x for x in dic]
+
+	return df
 
 def getDadosPadronizados():
 	list_df = []
 	for ano in range(2009,2019):
 		df = getDf(ano)
 		list_df.append(df)
+
+	# concatena todos os df da list_df em um só.
 	df_concat = pd.concat(list_df)
 	print(df_concat)
+
+	df_concat.to_csv('../dados/dados_padronizados_matriculas_januaria_2009_2018.csv', index=False)
+
