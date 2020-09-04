@@ -135,6 +135,43 @@ def getDf(ano):
 
 	return df
 
+def getKey(row):
+	# retorna um str com os valores das colunas que são imutaveis independente do ano
+	# que será usado como chave para gerar o Id.
+	key = f"{row['TP_COR_RACA']} {row['TP_SEXO']} {row['NU_ANO_NASCIMENTO']} \
+		{row['NU_MES_NASCIMENTO']} {row['NU_DIA_NASCIMENTO']}"
+	return key
+
+def getDicId(df):
+	# retorna um dicionário em que os index são as chaves, sem repetir.
+	dic_id = {}
+	for index, row in df.iterrows():
+		key = getKey(row)
+		dic_id[key] = 'null'
+
+	# cria um id para cada chave do dicionario.
+	idx = 1
+	for i in dic_id:
+		dic_id[i] = idx
+		idx += 1
+
+	return dic_id
+ 
+
+def getId(df):
+	dic_id = getDicId(df)
+	df['Id'] = 'null'
+	# Obtem uma chave de cada matricula e atribui sue id usando  o 
+	# dicionario que tem o index igual sua chave.
+	for index, row in df.iterrows():
+		key = getKey(row)
+		df.loc[index, 'Id'] = dic_id[key]
+		
+	return df
+
+
+
+
 def getDadosPadronizados():
 	list_df = []
 	for ano in range(2009,2019):
@@ -143,7 +180,15 @@ def getDadosPadronizados():
 
 	# concatena todos os df da list_df em um só.
 	df_concat = pd.concat(list_df)
+
+	# padroniza a coluna TP_SEXO
+	# >= 2017 1. Feminino 2. Masculino        
+	# <= 2016 0. masculino 1. feminino  
+	df_concat.loc[df_concat.TP_SEXO == 2, 'TP_SEXO'] = 0
+
+	# cria um id para cada matricula
+	df_concat = getId(df_concat)
 	print(df_concat)
 
-	df_concat.to_csv('../dados/dados_padronizados_matriculas_januaria_2009_2018.csv', index=False)
+	df_concat.to_csv('../dados/dados_padronizados_matriculas_januaria_2009_2018_com_id.csv', index=False)
 
