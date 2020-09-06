@@ -1,4 +1,5 @@
 import pandas as pd
+import verificacoes as verifica
 
 def getCodCurso():
 	# retorna o codigo dos cursos superiores do IFNMG campus Januária.
@@ -138,14 +139,44 @@ def getDf(ano):
 
 
 def getId(df):
+	# remover 2009 por não ter CO_MUNICIPIO_NASCIMENTO
+	df = df[df['NU_ANO_CENSO'] != 2009]
+
 	df1 = df.applymap(str)
 	df1['Id']  = df1[['TP_COR_RACA', 
 	                 'TP_SEXO', 
 	                 'NU_ANO_NASCIMENTO',
 	                 'NU_MES_NASCIMENTO',
-	                 'NU_DIA_NASCIMENTO']].agg(''.join, axis=1) 
-	df1.to_csv('../dados/dados_padronizados_matriculas_januaria_2009_2018_com_id.csv', index=False)
+	                 'NU_DIA_NASCIMENTO',
+	                 'CO_MUNICIPIO_NASCIMENTO']].agg(''.join, axis=1) 
+
+	# remove os id que se repetem              
+	repetidos = verifica.repetidos(df1)
+	for i in repetidos:
+		df1 = df1[df1['Id'] != i]
+	df1.to_csv('../dados/dados_padronizados_matriculas_januaria_2010_2018_com_id.csv', index=False)
+	
 	return df1
+
+# cria a coluna NOME_CURSO
+def get_nome_curso(df):
+	nome_curso = {
+		'96981': 'ANÁLISE E DESENVOLVIMENTO DE SISTEMAS',
+		'99503': 'MATEMÁTICA',
+		'107474': 'ADMINISTRAÇÃO',
+		'107476': 'AGRONOMIA',
+		'112692': 'FÍSICA',
+		'1102801': 'CIÊNCIAS BIOLÓGICAS',
+		'1102802': 'ENGENHARIA AGRÍCOLA E AMBIENTAL',
+		'1376268': 'ENGENHARIA CIVIL',
+		'1421026': 'SISTEMAS DE INFORMAÇÃO'
+	}
+
+	df['NOME_CURSO'] = '--'
+	for index, row in df.iterrows():
+		df.loc[index, 'NOME_CURSO'] = nome_curso[str(row['CO_CURSO'])]
+
+	return df
 
 
 
@@ -164,12 +195,13 @@ def getDadosPadronizados():
 	# <= 2016 0. masculino 1. feminino  
 	df_concat.loc[df_concat.TP_SEXO == 2, 'TP_SEXO'] = 0
 
+	# add nome dos cursos
+	df_concat = get_nome_curso(df_concat)
+
 	# salva o df sem id
 	df_concat.to_csv('../dados/dados_padronizados_matriculas_januaria_2009_2018.csv', index=False)
 
 	# cria um id para cada matricula
 	df_concat = getId(df_concat)
 	print(df_concat)
-	
-
 
