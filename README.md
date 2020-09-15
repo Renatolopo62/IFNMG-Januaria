@@ -83,3 +83,78 @@ Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 
   * Distribuição do tipo de situação de vínculo do aluno no curso. Coluna `TP_SITUACAO`.
   * Número de alunos ingreço por reserva de vagas. Coluna `IN_RESERVA_VAGAS`.
   * Distribuição de quanto tempo os alunos levam para se formar em cada curso. Coluna `NU_ANO_INGRESSO`.
+  
+  #### 4. Padronização dos dados e criação do id.
+  Nessa etapa foi utilizada a biblioteca pandas que pode ser instalada com o comando `pip install pandas` no seu terminal e importada com `import pandas as pd`.
+  No nosso script getters.py temos a função `get_dados_padronizados()` que cria dois arquivos um com os dados padronizados com o id e outro sem, 
+  acho desnecessário colocar a função toda aqui então vou por só as partes que julgo necessária para o entendimento. Então vamos lá...
+ 
+   ##### Padronizando os data frame
+   Primeiro utilizamos a função `get_df(ano)` passando ano por ano como parametro, essa função retorna o nossos dfs já padronizado e adicionamos todos eles
+   em uma lista.
+   ```
+   def get_df(ano):
+	df = pd.read_csv(f'../dados/matriculas_januaria{ano}.csv','r', delimiter='|')   
+
+	# seleciona somente as colunas que estão em LIST_COLUMNS
+	columns = list(df.columns)
+	columns_drop = [x for x in columns if x not in LIST_COLUMNS]
+	df = df.drop(columns = columns_drop)
+
+	# adiciona novas colunas caso ela não exista, para que os df ficarem com o
+	# mesmo número de colunas.
+	if ano != 2017 and ano != 2018:
+		df['NU_ANO_CENSO'] = ano
+	if ano == 2009:
+		df['CO_MUNICIPIO_NASCIMENTO'] = 'null'
+
+	# renomeia as colunas, elas devem ter os mesmos nomes em todos os data frames
+	# para poder usar a função concat.
+	dic = get_dic_rename(list(df.columns))
+	df.columns = [x for x in dic]
+
+	return df
+  ```
+  O que a função `get_df()` faz basicamente excluir as colunas que não são interessante para nosso estudo usando a função `.drop` do pandas que recebe de 
+  parametro uma lista com as colunas a serem excluidas, adiciona a coluna NU_ANO_CENSO que inicialmente só existe nos anos de 2018 e 2017, adiciona a
+  coluna CO_MUNICIPIO_NASCIMENTO no ano de 2009 e renomeia as colunas de forma que todos os anos tenha as colunas com nomes semelhantes.
+  
+  ```
+  # concatena todos os df da list_df em um só.
+  df_concat = pd.concat(list_df)
+  ```
+  Em seguida e usada a função `concat()` para concatenar todos os dfs da nossa lista em um só, para usar a função concat e necessário que os dataframes tenham 
+  o mesmo número de colunas e colunas com mesmo nome, por isso que foi feito a renomeação e adicionado novas colunas para alguns anos.
+  
+  ```
+  # padroniza a coluna TP_SEXO
+  # >= 2017 1. Feminino 2. Masculino        
+  # <= 2016 0. masculino 1. feminino  
+  df_concat.loc[df_concat.TP_SEXO == 2, 'TP_SEXO'] = 0
+
+  # add nome dos cursos
+  df_concat = get_nome_curso(df_concat)
+  ```
+  Para dar uma melhorada na nossa base de dados, padronizamos a coluna TP_SEXO que utilizava diferentes valores para identificar o sexo masculino
+  dependendo do ano e adicionamos a coluna NOME_CURSO.
+  
+  Após feito isso salvamos um arquivo com os dados padronizados, e continuamos o processamento, agora para criar o id. Na criação do id foi necessário remover 
+  as matriculas de 2009 por não ter o código do municipio de nascimento que e usado para a criação do id, e foi removidas 13 matriculas que tem informações 
+  duplicadas.
+  
+  ```
+  df1 = df.applymap(str)
+  df1['Id']  = df1[['TP_COR_RACA', 
+	            'TP_SEXO', 
+	            'NU_ANO_NASCIMENTO',
+	            'NU_MES_NASCIMENTO',
+	            'NU_DIA_NASCIMENTO',
+	            'CO_MUNICIPIO_NASCIMENTO']].agg(''.join, axis=1) 
+  ```
+  O id e criado através da junção das colunas 'TP_COR_RACA', 'TP_SEXO', 'NU_ANO_NASCIMENTO', 'NU_MES_NASCIMENTO', 'NU_DIA_NASCIMENTO' e 
+  'CO_MUNICIPIO_NASCIMENTO', por serem informações unica de cada aluno e possivel identificar esses alunos em cada ano na nossa base de dados
+  utilizando esses atributos. Depois e salvo outro arquivo agora com o id.
+  
+  ##### Porque salvar uma base de dados com Id e outra sem?
+  Podiamos muito bem ter somente a base de dados com o Id, porém se fizéssemos isso vamos perder as matriculas de 2009. 
+  
