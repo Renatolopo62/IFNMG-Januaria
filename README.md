@@ -2,6 +2,9 @@
 Uma análise do ensino superior do IFNMG campus januária entre os anos de 2009 e 2018 utilizando os dados do INEP.
 
 ## Etapas 
+### Objetivo
+O objetivo desse projeto é retirarar o máximo de informação e conhecimento possível com esses dados, posteriormente 
+pretendo fazer algum artigo com os ressultados aqui obitidos para ser usado na disciplina de metodologia cientifica. 
 ###  Filtragem dos dados
  #### 1. Baixar os censo de Educação superior no site do INEP.
  Os arquivos do censo podem ser encontrados [aqui](http://portal.inep.gov.br/microdados). Todos os arquivos
